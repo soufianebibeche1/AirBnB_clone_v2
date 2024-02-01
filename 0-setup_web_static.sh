@@ -6,7 +6,7 @@ sudo service nginx start
 sudo mkdir -p /data/web_static/shared / /data/web_static/releases/test/
 echo "hello world test" | sudo tee /data/web_static/releases/test/index.html > /dev/null
 sudo rm -rf /data/web_static/current
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 sudo chown -R ubuntu:ubuntu /data/
 sudo sed -i '38i \\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}' /etc/nginx/sites-available/default
 sudo service nginx restart
