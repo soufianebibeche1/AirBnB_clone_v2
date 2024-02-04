@@ -1,42 +1,56 @@
-# Import Fabric API
+#!/usr/bin/python3
+"""
+Fabric script to deploy web_static archive to web servers
+"""
+
+
 from fabric.api import *
 import os
 
-# Define the remote hosts
-env.hosts = ['<54.236.12.178>', '<54.226.35.202>']
+
+env.user = 'ubuntu'
+env.hosts = ['54.236.12.178', '54.226.35.202']
+
 
 def do_deploy(archive_path):
     """
-    Distribute an archive to web servers
+    Distributes an archive to the web servers
     """
     if not os.path.exists(archive_path):
         return False
 
-    # Upload the archive to the /tmp/ directory of the web server
-    put(archive_path, '/tmp/')
+    filename = os.path.basename(archive_path)
+    name = os.path.splitext(filename)[0]
 
-    # Extract the archive to the folder /data/web_static/releases/<archive filename without extension>
-    archive_filename = os.path.basename(archive_path)
-    release_folder = '/data/web_static/releases/{}'.format(
-        archive_filename.replace('.tgz', '')
-    )
-    run('mkdir -p {}'.format(release_folder))
-    run('tar -xzf /tmp/{} -C {}'.format(archive_filename, release_folder))
+    try:
+        """ Upload the archive to the /tmp/ directory of the web server"""
+        put(archive_path, '/tmp/')
 
-    # Delete the archive from the web server
-    run('rm /tmp/{}'.format(archive_filename))
+        """ Create the directory to uncompress the archive"""
+        run('mkdir -p /data/web_static/releases/{}/'.format(name))
 
-    # Move the contents of the web_static folder to the release folder
-    run('mv {}/web_static/* {}'.format(release_folder, release_folder))
+        """ Uncompress the archive to the folder"""
+        run('tar -xzf /tmp/{} -C /data/web_static/releases/{}/'
+            .format(filename, name))
 
-    # Remove the web_static folder
-    run('rm -rf {}/web_static'.format(release_folder))
+        """ Delete the archive from the web server"""
+        run('rm /tmp/{}'.format(filename))
 
-    # Delete the symbolic link /data/web_static/current
-    run('rm -rf /data/web_static/current')
+        """ Move the files to the new folder and remove the old folder"""
+        run('mv /data/web_static/releases/{}/web_static/* \
+            /data/web_static/releases/{}/'.format(name, name))
+        run('rm -rf /data/web_static/releases/{}/web_static'
+            .format(name))
 
-    # Create a new symbolic link to the new version
-    run('ln -s {} /data/web_static/current'.format(release_folder))
+        """ Delete the symbolic link /data/web_static/current from the web"""
+        run('rm -rf /data/web_static/current')
 
-    print("New version deployed!")
-    return True
+        """ Create a new the symbolic link /data/web_static/current"""
+        run('ln -s /data/web_static/releases/{}/ \
+            /data/web_static/current'.format(name))
+
+        print('New version deployed!')
+        return True
+
+    except Exception:
+        return False
