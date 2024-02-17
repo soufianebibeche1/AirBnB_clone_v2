@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
-This module starts a Flask apllication.
+This is module 3-python_route.
+It starts a minimal Flask apllication.
+Run it with python3 -m 3-python_route or ./3-python_route
 """
 from flask import Flask
 app = Flask(__name__)
@@ -8,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_hbnb():
-    """hello world"""
+    """flask hello world"""
     return "Hello HBNB!"
 
 
@@ -24,6 +26,10 @@ def c_text(text):
     return "C {}".format(text.replace("_", " "))
 
 
+@app.route('/python/')   # , defaults={'text': "is cool"})
+# redirection, strict_slashes prevents the 301 redirect when missing last /
+# see http://stackoverflow.com/a/17628419/7484498
+# the default value can be put in 2 different places.
 @app.route('/python/<text>')
 def python_text(text="is cool"):
     """give a rule a default value"""
