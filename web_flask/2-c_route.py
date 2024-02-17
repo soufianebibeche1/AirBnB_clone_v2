@@ -1,19 +1,29 @@
 #!/usr/bin/python3
-from flask import Flask, escape
-
+"""
+This module starts a Flask apllication.
+"""
+from flask import Flask
 app = Flask(__name__)
 
-@app.route('/', strict_slashes=False)
+
+@app.route('/')
 def hello_hbnb():
+    """hello world"""
     return "Hello HBNB!"
 
-@app.route('/hbnb', strict_slashes=False)
+
+@app.route('/hbnb')
 def hbnb():
+    """add a path to the url"""
     return "HBNB"
 
-@app.route('/c/<text>', strict_slashes=False)
-def c_is_fun(text):
-    return "C " + escape(text.replace('_', ' '))
+
+@app.route('/c/<text>')
+def c_text(text):
+    """make a simple variable rule"""
+    return "C {}".format(text.replace("_", " "))
+
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    # values here are the default, mentioned as keepsake
+    app.run(host="0.0.0.0", port="5000")
