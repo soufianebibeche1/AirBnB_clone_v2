@@ -22,6 +22,7 @@ def c_text(text):
     return "C {}".format(text.replace("_", " "))
 
 
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>')
 def python_text(text="is cool"):
     """Instatiate Rule with a Default Value"""
