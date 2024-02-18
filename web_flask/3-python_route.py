@@ -1,28 +1,24 @@
 #!/usr/bin/python3
-"""
-This is module 3-python_route.
-It starts a minimal Flask apllication.
-Run it with python3 -m 3-python_route or ./3-python_route
-"""
+""" module starts a Flask Web application """
 from flask import Flask
 app = Flask(__name__)
 
 
 @app.route('/')
 def hello_hbnb():
-    """flask hello world"""
+    """Flask hello world"""
     return "Hello HBNB!"
 
 
 @app.route('/hbnb')
 def hbnb():
-    """add a path to the url"""
+    """Add Path For URL"""
     return "HBNB"
 
 
 @app.route('/c/<text>')
 def c_text(text):
-    """make a simple variable rule"""
+    """Flask Variable Rule"""
     return "C {}".format(text.replace("_", " "))
 
 
@@ -32,10 +28,9 @@ def c_text(text):
 # the default value can be put in 2 different places.
 @app.route('/python/<text>')
 def python_text(text="is cool"):
-    """give a rule a default value"""
+    """Instatiate Rule with a Default Value"""
     return "Python {}".format(text.replace("_", " "))
 
 
 if __name__ == "__main__":
-    # values here are the default, mentioned as keepsake
     app.run(host="0.0.0.0", port="5000")
