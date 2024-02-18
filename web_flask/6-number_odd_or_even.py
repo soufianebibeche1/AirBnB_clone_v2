@@ -1,9 +1,5 @@
 #!/usr/bin/python3
-"""
-This is module 6-number_odd_or_even.
-It starts a minimal Flask application.
-Run it with python3 -m 6-number_odd_or_even or ./6-number_odd_or_even
-"""
+""" module starts a Flask Web application """
 from flask import Flask
 from flask import render_template
 app = Flask(__name__)
@@ -11,32 +7,32 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_hbnb():
-    """flask hello world"""
+    """Flask hello world"""
     return "Hello HBNB!"
 
 
 @app.route('/hbnb')
 def hbnb():
-    """add a path to the url"""
+    """Add Path To URL"""
     return "HBNB"
 
 
 @app.route('/c/<text>')
 def c_text(text):
-    """make a simple variable rule"""
+    """Create A Rule"""
     return "C {}".format(text.replace("_", " "))
 
 
 @app.route('/python/', defaults={'text': "is cool"})
 @app.route('/python/<text>')
 def python_text(text):
-    """give a rule a default value"""
+    """Give The Rule A Value"""
     return "Python {}".format(text.replace("_", " "))
 
 
 @app.route('/number/<int:n>')
 def number_route(n):
-    """make a rule only take a number"""
+    """imake Rule Accept only Numbers"""
     return "{:d} is a number".format(n)
 
 
